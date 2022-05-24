@@ -1,0 +1,21 @@
+<html>
+	<table>
+        <thead>
+	          <tr>
+								<th>Field 1</th>
+                <th>Field 2</th>
+             </tr>
+        </thead>
+        <tbody>
+								{% for fields in fields %}
+                <tr>
+
+										<td> {{ fields.sector1}}</td>
+                    <td> {{ fields.sector2 }} </td>
+
+
+								{% endfor %}
+         </tbody>
+    </table>
+
+</html>
