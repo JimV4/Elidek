@@ -34,13 +34,13 @@ def create_about():
     ## form = StudentForm()
     ## when the form is submitted
     id = request.form['id']
-   
+
     sector = request.form['sector']
-   
+
     # newStudent = form.__dict__
     query = "insert into about(project_iD, sector) values(\""+id+"\", \""+sector+"\" );"
     print(query)
- 
+
     try:
         cur = db.connection.cursor()
         cur.execute(query)
@@ -60,13 +60,13 @@ def create_phone():
     ## form = StudentForm()
     ## when the form is submitted
     org = request.form['org']
-   
+
     phone = request.form['phone']
-   
+
     # newStudent = form.__dict__
     query = "insert into org_phone(org_acronym, phone_number) values(\""+org+"\", \""+phone+"\" );"
     print(query)
- 
+
     try:
         cur = db.connection.cursor()
         cur.execute(query)
@@ -85,10 +85,10 @@ def create_report():
 
     ## form = StudentForm()
     ## when the form is submitted
-    id = request.form['id']   
+    id = request.form['id']
     title = request.form['title']
     sum = request.form['sum']
-   
+
     # newStudent = form.__dict__
     query = "insert into reports(project_iD, title, summary) values(\""+id+"\", \""+title+"\", \""+sum+"\" );"
     print(query)
@@ -112,11 +112,11 @@ def create_exec():
     ## form = StudentForm()
     ## when the form is submitted
     id = request.form['id']
-   
+
     name = request.form['name']
 
     last_name = request.form['last_name']
-   
+
     # newStudent = form.__dict__
     query = "insert into executives(exec_ID, first_name, last_name) values(\""+id+"\", \""+name+"\", \""+ last_name +"\" );"
     print(query)
@@ -139,8 +139,8 @@ def create_filed():
     ## form = StudentForm()
     ## when the form is submitted
     sector = request.form['sector']
-   
-   
+
+
     # newStudent = form.__dict__
     query = "insert into fields(sector) values(\""+sector+"\" );"
     print(query)
@@ -164,8 +164,8 @@ def create_program():
     ## when the form is submitted
     id = request.form['id']
     dep = request.form['dep']
-   
-   
+
+
     # newStudent = form.__dict__
     query = "insert into programs(program_ID, department) values(\""+id+"\", \""+dep+"\" );"
     print(query)
@@ -190,8 +190,8 @@ def create_works_at():
     ## when the form is submitted
     rid = request.form['rid']
     pid = request.form['pid']
-   
-   
+
+
     # newStudent = form.__dict__
     query = "insert into works_at(researcher_ID, project_ID) values(\""+rid+"\", \""+pid+"\" );"
     print(query)
@@ -219,9 +219,9 @@ def create_res():
     sex = request.form['sex']
     date_birth = request.form['date_birth']
     org = request.form['org']
-    work_date = request.form ['work_date']   
+    work_date = request.form ['work_date']
 
-   
+
     # newStudent = form.__dict__
     query = "insert into researchers(researcher_ID, first_name, last_name, sex, birth_date, org_acronym, start_date) values(\""+id+"\", \""+fname+"\", \""+lname+"\", \""+sex+"\", \""+date_birth+"\", \""+org+"\", \""+work_date+"\" );"
     print(query)
@@ -238,6 +238,53 @@ def create_res():
     ## else, response for GET request
     return render_template("insert_researchers.html", pageTitle = "Create About")
 
+
+@app.route("/create/insert_organization", methods = [ "POST"]) ## "GET" by default
+def create_org():
+    ## form = StudentForm()
+    ## when the form is submitted
+    org = request.form['org']
+    categ = request.form['categ']
+    name =request.form['name']
+    street = request.form['street']
+    str_number = request.form['strnumber']
+    postal = request.form['postal']
+    city = request.form ['city']
+    equity = request.form ['equity']
+    ffm = request.form ['ffm']
+    ffa = request.form ['ffa']
+
+    if (categ == "Univ"):
+        equity = "NULL"
+        ffa = "NULL"
+
+    if (categ == "Centr"):
+        equity = "NULL"
+
+    if (categ == "Comp"):
+        ffm = "NULL"
+        ffa = "NULL"
+
+
+
+
+    # newStudent = form.__dict__
+    query = "insert into organizations(org_acronym, category, name, street, street_number, postal_code, city) values(\""+org+"\", \""+categ+"\", \""+name+"\", \""+street+"\", \""+str_number+"\", \""+postal+"\", \""+city+"\");"
+    print(query)
+    try:
+        cur = db.connection.cursor()
+        cur.execute(query)
+        db.connection.commit()
+        cur.close()
+        flash("Organization inserted successfully", "success")
+        return redirect(url_for("index"))
+    except Exception as e: ## OperationalError
+        flash(str(e), "danger")
+
+    ## else, response for GET request
+    return render_template("insert_organization.html", pageTitle = "Create About")
+
+
 @app.route("/create/insert_projects", methods = [ "POST"]) ## "GET" by default
 def create_proj():
 
@@ -249,7 +296,7 @@ def create_proj():
     sdate = request.form['sdate']
     edate = request.form['edate']
     amount = request.form['amount']
-    org = request.form ['org']   
+    org = request.form ['org']
     prog = request.form['prog']
     exec =request.form['exec']
     sup = request.form['sup']
@@ -274,7 +321,77 @@ def create_proj():
     return render_template("insert_projects.html", pageTitle = "Create About")
 
 
-#QUERIES  
+#QUERIES
+@app.route("/read/query1", methods = ["POST"])
+def complicated_query():
+    try:
+        ## execute query 3
+        #conn = db.connect()
+        #cur = conn.cursor()
+        sdate=request.form['sdate']
+        pr = request.form['project']
+        edate=request.form['edate']
+        duration=request.form['duration']
+        exec_id=request.form['exec_id']
+
+        count_conditions = 0
+        if(sdate==""):
+            sdate_cond = ""
+        else:
+            sdate_cond = " start_date = " +"\"" + sdate+ "\"and"
+            count_conditions = count_conditions + 1
+
+        if(edate==""):
+            edate_cond = ""
+        else:
+            edate_cond = " end_date = " +"\"" + edate+ "\"and"
+            count_conditions = count_conditions + 1
+
+
+        if(duration==""):
+            duration_cond = ""
+        else:
+            duration_cond = " duration = " + duration+ "and"
+            count_conditions = count_conditions + 1
+
+        if(exec_id==""):
+            exec_id_cond = ""
+        else:
+            exec_id_cond = " exec_ID = " +"\"" + exec_id+ "\"and"
+            count_conditions = count_conditions + 1
+
+        if(count_conditions == 0):
+            where = ""
+        else:
+            where = " where"
+
+        cur = db.connection.cursor()
+
+        if(pr != ""):
+            query1="select r.first_name, r.last_name from works_at as w, researchers as r where  w.researcher_ID = r.researcher_ID and w.project_ID = \""+pr+"\";"
+        else:
+            Query1="select title, program_ID from projects "+where+sdate_cond+edate_cond+duration_cond+exec_id_cond+";"
+            query1=Query1.replace("and;", ';')
+        print(query1)
+        cur.execute(query1)
+
+        #cur.execute("SELECT researcher_ID, last_name, first_name FROM researchers")
+        column_names = [i[0] for i in cur.description]
+        #res = dict(zip(column_names, cur.fetchone()))
+        projects = [dict(zip(column_names, entry)) for entry in cur.fetchall()]
+        cur.close()
+        if(pr==""):
+            return render_template("result_query1.html", projects = projects, pageTitle = "Fields Page")
+        else:
+            return render_template("result_query1_res.html", projects = projects, pageTitle = "Fields Page")
+
+
+
+    except Exception as e:
+        print(e)
+        #if the connection to the database fails, return HTTP response 500
+        flash(str(e), "danger")
+        abort(500)
 
 @app.route("/read/query2/view1", methods = ["GET"])
 def view1():
@@ -533,7 +650,12 @@ def insert_about():
 @app.route("/create/insert_report")
 def insert_report():
     return render_template("insert_report.html")
-    
+
+
+@app.route("/read/query1")
+def query1():
+    return render_template("query1.html")
+
 @app.route("/read/query2")
 def query2():
     return render_template("query2.html")
@@ -557,7 +679,7 @@ def Delete_org():
     ## when the form is submitted
     id = request.form['id']
     # newStudent = form.__dict__
-    query = "delete from organization where org_acronym = \""+id+"\";" 
+    query = "delete from organizations where org_acronym = \""+id+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -584,9 +706,9 @@ def Delete_about():
     id = request.form['id']
 
     sector = request.form['sector']
-  
+
     # newStudent = form.__dict__
-    query = "delete from about where project_ID = \""+id+"\" and sector = \""+sector+"\";" 
+    query = "delete from about where project_ID = \""+id+"\" and sector = \""+sector+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -614,9 +736,9 @@ def Delete_phone():
     org = request.form['org']
 
     phone = request.form['phone']
-  
+
     # newStudent = form.__dict__
-    query = "delete from org_phone where org_acronym = \""+org+"\" and phone_number = \""+phone+"\";" 
+    query = "delete from org_phone where org_acronym = \""+org+"\" and phone_number = \""+phone+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -642,7 +764,7 @@ def Delete_program():
     ## when the form is submitted
     id = request.form['id']
     # newStudent = form.__dict__
-    query = "delete from programs where program_ID = \""+id+"\";" 
+    query = "delete from programs where program_ID = \""+id+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -668,7 +790,7 @@ def Delete_exec():
     ## when the form is submitted
     id = request.form['id']
     # newStudent = form.__dict__
-    query = "delete from executives where exec_ID = \""+id+"\";" 
+    query = "delete from executives where exec_ID = \""+id+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -694,7 +816,7 @@ def Delete_fields():
     ## when the form is submitted
     id = request.form['id']
     # newStudent = form.__dict__
-    query = "delete from fields where sector = \""+id+"\";" 
+    query = "delete from fields where sector = \""+id+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -722,9 +844,9 @@ def Delete_works_at():
     pid = request.form['pid']
 
     rid = request.form['rid']
-  
+
     # newStudent = form.__dict__
-    query = "delete from works_at where project_ID = \""+pid+"\" and researcher_ID = \""+rid+"\";" 
+    query = "delete from works_at where project_ID = \""+pid+"\" and researcher_ID = \""+rid+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -751,7 +873,7 @@ def Delete_proj():
     ## when the form is submitted
     id = request.form['id']
     # newStudent = form.__dict__
-    query = "delete from projects where project_ID = \""+id+"\";" 
+    query = "delete from projects where project_ID = \""+id+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -778,7 +900,7 @@ def Delete_report():
     id = request.form['id']
     title = request.form['title']
     # newStudent = form.__dict__
-    query = "delete from reports where project_ID = \""+id+"\" and title = \""+title+"\";" 
+    query = "delete from reports where project_ID = \""+id+"\" and title = \""+title+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -804,7 +926,7 @@ def Delete_researcher():
     ## when the form is submitted
     id = request.form['id']
     # newStudent = form.__dict__
-    query = "delete from researchers where researcher_ID = \""+id+"\";" 
+    query = "delete from researchers where researcher_ID = \""+id+"\";"
     print(query)
     try:
         cur = db.connection.cursor()
@@ -820,5 +942,366 @@ def Delete_researcher():
     return render_template("delete_researchers.html", pageTitle = "Create About")
 
 
+#UPDATES
+
+@app.route("/update/update_executives")
+def update_executives():
+    return render_template("update_executives.html")
+
+@app.route("/update/update_executives", methods = ["POST"])
+def Update_executives():
+    id = request.form['id']
+    first_name = request.form['name']
+    last_name = request.form['last_name']
+
+    if(first_name == ""):
+        first_name_cond=""
+    else:
+        first_name_cond = " first_name = \""+first_name+"\","
+
+    if(last_name == ""):
+        last_name_cond=""
+    else:
+        last_name_cond = " last_name = \""+last_name+"\","
+
+    set = "set"+first_name_cond+last_name_cond
+
+    # newStudent = form.__dict__
+    Query = "update executives "+set+" where exec_ID = \""+id+"\";"
+    query = Query.replace(", where", " where")
+    print(query)
+    try:
+        cur = db.connection.cursor()
+        cur.execute(query)
+        db.connection.commit()
+        cur.close()
+        flash("Executive updated successfully", "success")
+        return redirect(url_for("index"))
+    except Exception as e: ## OperationalError
+        flash(str(e), "danger")
+
+    ## else, response for GET request
+    return render_template("update_executives.html", pageTitle = "Create About")
+
+@app.route("/update/update_programs")
+def update_programs():
+    return render_template("update_programs.html")
+
+@app.route("/update/update_programs", methods = ["POST"])
+def Update_programs():
+
+    id = request.form['id']
+    dep = request.form['dep']
+
+    if(dep == ""):
+        dep_cond=""
+    else:
+        dep_cond = " department = \""+dep+"\","
 
 
+    set = "set"+dep_cond
+
+    # newStudent = form.__dict__
+    Query = "update programs "+set+" where program_ID = \""+id+"\";"
+    query = Query.replace(", where", " where")
+    print(query)
+    try:
+        cur = db.connection.cursor()
+        cur.execute(query)
+        db.connection.commit()
+        cur.close()
+        flash("Program updated successfully", "success")
+        return redirect(url_for("index"))
+    except Exception as e: ## OperationalError
+        flash(str(e), "danger")
+
+    ## else, response for GET request
+    return render_template("update_programs.html", pageTitle = "Create About")
+
+
+@app.route("/update/update_researchers")
+def update_researchers():
+    return render_template("update_researchers.html")
+
+@app.route("/update/update_researchers", methods = ["POST"])
+def Update_researchers():
+
+    id = request.form['id']
+    fname = request.form['fname']
+    lname =request.form['lname']
+    sex = request.form['sex']
+    date_birth = request.form['date_birth']
+    org = request.form['org']
+    work_date = request.form ['work_date']
+
+    if(fname == ""):
+        fname_cond=""
+    else:
+        fname_cond = " first_name = \""+fname+"\","
+
+    if(lname == ""):
+        lname_cond=""
+    else:
+        lname_cond = " last_name = \""+lname+"\","
+    
+    if(sex == ""):
+        sex_cond=""
+    else:
+        sex_cond = " sex = \""+sex+"\","
+
+    if(date_birth == ""):
+        date_birth_cond=""
+    else:
+        date_birth_cond = " birth_date = \""+date_birth+"\","
+
+    if(org == ""):
+        org_cond=""
+    else:
+        org_cond = " org_acronym = \""+org+"\","
+
+    if(work_date == ""):
+        work_date_cond=""
+    else:
+        work_date_cond = " start_date = \""+work_date+"\","
+
+    set = "set"+fname_cond+lname_cond+sex_cond+date_birth_cond+org_cond+work_date_cond
+
+    # newStudent = form.__dict__
+    Query = "update researchers "+set+" where researcher_ID = \""+id+"\";"
+    query = Query.replace(", where", " where")
+    print(query)
+    try:
+        cur = db.connection.cursor()
+        cur.execute(query)
+        db.connection.commit()
+        cur.close()
+        flash("Researcher updated successfully", "success")
+        return redirect(url_for("index"))
+    except Exception as e: ## OperationalError
+        flash(str(e), "danger")
+
+    ## else, response for GET request
+    return render_template("update_researchers.html", pageTitle = "Create About")
+
+@app.route("/update/update_projects")
+def update_projects():
+    return render_template("update_projects.html")
+
+@app.route("/update/update_projects", methods = ["POST"])
+def Update_projects():
+
+    id = request.form['id']
+    title = request.form['title']
+    abs =request.form['abs']
+    sdate = request.form['sdate']
+    edate = request.form['edate']
+    amount = request.form['amount']
+    org = request.form ['org']
+    prog = request.form['prog']
+    exec =request.form['exec']
+    sup = request.form['sup']
+    eval = request.form['eval']
+
+    if(title == ""):
+        title_cond=""
+    else:
+        title_cond = " title = \""+title+"\","
+
+    if(abs == ""):
+        abs_cond=""
+    else:
+        abs_cond = " abstract = \""+abs+"\","
+    
+    if(sdate == ""):
+        sdate_cond=""
+    else:
+        sdate_cond = " start_date = \""+sdate+"\","
+
+    if(edate == ""):
+        edate_cond=""
+    else:
+        edate_cond = " end_date = \""+edate+"\","
+   
+    if(edate == ""):
+        duration_cond=""
+    else:
+        duration_cond = " duration = \""+getDuration(sdate, edate)+"\","
+
+    if(amount == ""):
+        amount_cond=""
+    else:
+        amount_cond = " amount = \""+amount+"\","
+
+    if(org == ""):
+        org_cond=""
+    else:
+        org_cond = " org_acronym = \""+org+"\","
+
+    if(prog == ""):
+        prog_cond=""
+    else:
+        prog_cond = " program_ID = \""+prog+"\","
+
+    if(exec == ""):
+        exec_cond=""
+    else:
+        exec_cond = " exec_ID = \""+exec+"\","
+
+    if(sup == ""):
+        sup_cond=""
+    else:
+        sup_cond = " supervisor_ID = \""+sup+"\","
+
+    if(eval == ""):
+        eval_cond=""
+    else:
+        eval_cond = " evaluator_ID = \""+eval+"\","
+
+    set = "set"+title_cond+abs_cond+sdate_cond+edate_cond+duration_cond+amount_cond+org_cond+prog_cond+exec_cond+sup_cond+eval_cond
+
+    # newStudent = form.__dict__
+    Query = "update projects "+set+" where project_ID = \""+id+"\";"
+    query = Query.replace(", where", " where")
+    print(query)
+    try:
+        cur = db.connection.cursor()
+        cur.execute(query)
+        db.connection.commit()
+        cur.close()
+        flash("Project updated successfully", "success")
+        return redirect(url_for("index"))
+    except Exception as e: ## OperationalError
+        flash(str(e), "danger")
+
+    ## else, response for GET request
+    return render_template("update_projects.html", pageTitle = "Create About")
+
+
+@app.route("/update/update_report")
+def update_report():
+    return render_template("update_report.html")
+
+@app.route("/update/update_report", methods = ["POST"])
+def Update_report():
+
+    id = request.form['id']
+    title = request.form['title']
+    sum = request.form['sum']
+
+    if(sum == ""):
+        sum_cond=""
+    else:
+        sum_cond = " summary = \""+sum+"\","
+
+
+    set = "set"+sum_cond
+
+    # newStudent = form.__dict__
+    Query = "update reports "+set+" where project_ID = \""+id+"\" and title = \""+title+"\";"
+    query = Query.replace(", where", " where")
+    print(query)
+    try:
+        cur = db.connection.cursor()
+        cur.execute(query)
+        db.connection.commit()
+        cur.close()
+        flash("Report updated successfully", "success")
+        return redirect(url_for("index"))
+    except Exception as e: ## OperationalError
+        flash(str(e), "danger")
+
+    ## else, response for GET request
+    return render_template("update_report.html", pageTitle = "Create About")
+
+@app.route("/update/update_organization")
+def update_organization():
+    return render_template("update_organization.html")
+
+@app.route("/update/update_organization", methods = ["POST"])
+def Update_organization():
+
+    org = request.form['org']
+    categ = request.form['categ']
+    name =request.form['name']
+    street = request.form['street']
+    str_number = request.form['strnumber']
+    postal = request.form['postal']
+    city = request.form ['city']
+    equity = request.form ['equity']
+    ffm = request.form ['ffm']
+    ffa = request.form ['ffa']
+
+    if (categ == "Univ"):
+        equity = "NULL"
+        ffa = "NULL"
+
+    if (categ == "Centr"):
+        equity = "NULL"
+
+    if (categ == "Comp"):
+        ffm = "NULL"
+        ffa = "NULL"
+
+    if(categ == ""):
+        categ_cond=""
+    else:
+        categ_cond = " category = \""+categ+"\","
+
+    if(name == ""):
+        name_cond=""
+    else:
+        name_cond = " name = \""+name+"\","
+
+    if(street == ""):
+        street_cond=""
+    else:
+        street_cond = " street = \""+street+"\","
+
+    if(str_number == ""):
+        str_number_cond=""
+    else:
+        str_number_cond = " street_number = \""+str_number+"\","
+
+    if(postal == ""):
+        postal_cond=""
+    else:
+        postal_cond = " postal_code = \""+postal+"\","
+
+    if(city == ""):
+        city_cond=""
+    else:
+        city_cond = " city = \""+city+"\","
+
+    if(equity == ""):
+        equity_cond=""
+    else:
+        equity_cond = " equity = \""+equity+"\","
+
+    if(ffm == ""):
+        ffm_cond=""
+    else:
+        ffm_cond = " funds_from_ministry = \""+ffm+"\","
+
+    if(ffa == ""):
+        ffa_cond=""
+    else:
+        ffa_cond = " funds_from_actions = \""+ffa+"\","
+
+    set = "set"+categ_cond+name_cond+street_cond+str_number_cond+postal_cond+city_cond
+
+    # newStudent = form.__dict__
+    Query = "update organizations "+set+" where org_acronym = \""+org+"\";"
+    query = Query.replace(", where", " where")
+    print(query)
+    try:
+        cur = db.connection.cursor()
+        cur.execute(query)
+        db.connection.commit()
+        cur.close()
+        flash("Organization updated successfully", "success")
+        return redirect(url_for("index"))
+    except Exception as e: ## OperationalError
+        flash(str(e), "danger")
+
+    ## else, response for GET request
+    return render_template("update_organization.html", pageTitle = "Create About")

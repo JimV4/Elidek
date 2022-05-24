@@ -1,5 +1,5 @@
-CREATE SCHEMA elidek;
-USE elidek;
+CREATE SCHEMA elidekFinal;
+USE elidekFinal;
 
 drop table if exists organizations;
 create table organizations (
@@ -101,7 +101,7 @@ create table projects (
 
 	foreign key (evaluator_ID)  references researchers(researcher_ID)
 								on delete set null
-								on update cascade));
+								on update cascade);
 
 
 drop table if exists reports;
@@ -111,7 +111,7 @@ create table reports (
     summary 	varchar(50),
     primary key(project_ID, title),
 	foreign key (project_ID) references projects(project_ID)
-							 on delete cascade,
+							 on delete cascade
 							 on update cascade);
 
 
@@ -134,9 +134,9 @@ create table works_at (
 	researcher_ID	varchar(5),
     project_ID		varchar(5),
     primary key (researcher_ID, project_ID),
-    foreign key (researcher_ID) references researchers(researcher_ID),
+    foreign key (researcher_ID) references researchers(researcher_ID)
 								on delete cascade
 								on update cascade,
     foreign key (project_ID) 	references projects(project_ID)
-								on delete cascade,
+								on delete cascade
 								on update cascade);
