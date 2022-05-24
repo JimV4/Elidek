@@ -1,0 +1,50 @@
+<html>
+{% include "flash_messages.html" %}
+<h4> Give the following information: </h4>
+<br/>
+
+<form method="POST">
+Project's ID: <input type="text" name="id">
+<br/><br/>
+
+Title: <input type="text" name="title">
+<br/><br/>
+
+Abstract: <br/><textarea rows ="10" cols="30" name="abs"></textarea>
+<br/><br/>
+
+Starting Date: <input type="date" name="sdate">
+<br/><br/>
+
+Ending Date: <input type="date" name="edate">
+<br/><br/>
+
+Amount: <input type="text" name="amount">
+<br/><br/>
+
+Organization's acronym: <input type="text" name="org">
+<br/><br/>
+
+Program's ID: <input type="text" name="prog">
+<br/><br/>
+
+Executive's acronym: <input type="text" name="exec">
+<br/><br/>
+
+Supervisor's acronym: <input type="text" name="sup">
+<br/><br/>
+
+Evaluator's acronym: <input type="text" name="eval">
+<br/><br/>
+
+Evaluation's mark: <input type="text" name="mark">
+<br/><br/>
+
+Evaluation's Date: <input type="date" name="eval_date">
+<br/><br/>
+
+<br/>
+<input type="submit" name="form">
+</form>
+
+</html>

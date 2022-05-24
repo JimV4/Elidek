@@ -1,0 +1,26 @@
+<html>
+{% include "flash_messages.html" %}
+<h4> Give the following information: </h4>
+<br/>
+<br/>
+
+Update is based on the project's ID and report's title: <br/>
+<form method="POST">
+Project's ID: <input type="text" name="id">
+<br/><br/>
+
+Title: <input type="text" name="title">
+<br/><br/>
+
+
+Give the new information. Blank fields will NOT be changed!
+
+Summary: <br/><textarea rows ="10" cols="30" name="sum"></textarea>
+<br/><br/>
+
+
+
+<br/>
+<input type="submit" name ="form">
+</form>
+</html>

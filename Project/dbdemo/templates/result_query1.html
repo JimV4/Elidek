@@ -1,0 +1,60 @@
+<html>
+
+<h4> Give the desired information: </h4>
+<br/>
+<form method="POST">
+Start date of the project: <input type="date" name="sdate">
+<br/><br/>
+
+End date of project: <input type="date" name="edate">
+<br/><br/>
+
+Duration of the project: <input type="text" name="duration">
+<br/><br/>
+
+Executive's ID: <input type="text" name="exec_id">
+<br/><br/>
+Select title:
+<select name="project">
+	<option value="">
+	{% for projects in projects %}
+		<option value = {{projects.title}}> {{projects.title}} </option>
+	{% endfor %}
+</select>
+<br/>
+<br/>
+<br/>
+<input type="submit" name="form">
+</form>
+
+<a href = "http://127.0.0.1:5000"> Go to welcome.</a>
+<br/>
+<br/>
+
+<form method="POST">
+
+
+
+	<table>
+        <thead>
+	          <tr>
+								<th>Title</th>
+                <th>Program</th>
+             </tr>
+        </thead>
+        <tbody>
+								{% for projects in projects %}
+                <tr>
+
+										<td> {{ projects.title }}</td>
+                    <td> {{ projects.program_ID }}</td>
+
+
+								{% endfor %}
+         </tbody>
+    </table>
+
+<br/>
+<br/>
+
+</html>
