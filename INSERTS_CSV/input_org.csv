@@ -1,0 +1,11 @@
+org_acronym,category,name,street,street_number,postal_code,city
+org1,Univ,organization1,AnfieldRoad,1,12345,Athens
+org2,Comp,organization2,AnfieldRoad,2,12345,Patras
+org3,Centr,organization3,AnfieldRoad,3,12345,Larissa
+org4,Univ,organization4,AnfieldRoad,4,12345,Kavala
+org5,Centr,organization5,AnfieldRoad,5,12345,Trikala
+org6,Comp,organization6,AnfieldRoad,6,12345,Gianenna
+org7,Centr,organization7,AnfieldRoad,7,12345,Athens
+org8,Univ,organization8,AnfieldRoad,8,12345,Patras
+org9,Univ,organization9,AnfieldRoad,9,12345,Thess
+org10,Comp,organization10,AnfieldRoad,10,12345,Thess
