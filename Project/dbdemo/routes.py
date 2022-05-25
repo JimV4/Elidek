@@ -47,7 +47,7 @@ def create_about():
         db.connection.commit()
         cur.close()
         flash("About inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_about"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -73,7 +73,7 @@ def create_phone():
         db.connection.commit()
         cur.close()
         flash("Phone inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_phone"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -98,7 +98,7 @@ def create_report():
         db.connection.commit()
         cur.close()
         flash("Report inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_report"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -126,7 +126,7 @@ def create_exec():
         db.connection.commit()
         cur.close()
         flash("Executive inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_exec"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -150,7 +150,7 @@ def create_filed():
         db.connection.commit()
         cur.close()
         flash("Field inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_field"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -175,7 +175,7 @@ def create_program():
         db.connection.commit()
         cur.close()
         flash("Program inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_program"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -201,7 +201,7 @@ def create_works_at():
         db.connection.commit()
         cur.close()
         flash("Works_at inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_works_at"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -231,7 +231,7 @@ def create_res():
         db.connection.commit()
         cur.close()
         flash("Researcher inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_res"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -263,7 +263,7 @@ def create_org():
     if (categ == "Comp"):
         ffm = "NULL"
         ffa = "NULL"
-    
+
 
     phone1=request.form['phone1']
     phone2=request.form['phone2']
@@ -284,7 +284,7 @@ def create_org():
         db.connection.commit()
         cur.close()
         flash("Organization inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_organization"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -323,7 +323,7 @@ def create_proj():
         db.connection.commit()
         cur.close()
         flash("Project inserted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("create_proj"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -697,7 +697,7 @@ def Delete_org():
         db.connection.commit()
         cur.close()
         flash("Organization deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_org"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -726,7 +726,7 @@ def Delete_about():
         db.connection.commit()
         cur.close()
         flash("About deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_about"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -756,7 +756,7 @@ def Delete_phone():
         db.connection.commit()
         cur.close()
         flash("Phone deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_phone"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -782,7 +782,7 @@ def Delete_program():
         db.connection.commit()
         cur.close()
         flash("Program deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_program"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -808,7 +808,7 @@ def Delete_exec():
         db.connection.commit()
         cur.close()
         flash("Executive deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_exec"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -834,7 +834,7 @@ def Delete_fields():
         db.connection.commit()
         cur.close()
         flash("Field deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_fields"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -864,7 +864,7 @@ def Delete_works_at():
         db.connection.commit()
         cur.close()
         flash("Work_at deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_works_at"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -891,7 +891,7 @@ def Delete_proj():
         db.connection.commit()
         cur.close()
         flash("Project deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_proj"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -918,7 +918,7 @@ def Delete_report():
         db.connection.commit()
         cur.close()
         flash("Report deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_report"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -944,7 +944,7 @@ def Delete_researcher():
         db.connection.commit()
         cur.close()
         flash("Researcher deleted successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Delete_researcher"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -986,7 +986,7 @@ def Update_executives():
         db.connection.commit()
         cur.close()
         flash("Executive updated successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Update_executives"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -1021,7 +1021,7 @@ def Update_programs():
         db.connection.commit()
         cur.close()
         flash("Program updated successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Update_programs"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -1053,7 +1053,7 @@ def Update_researchers():
         lname_cond=""
     else:
         lname_cond = " last_name = \""+lname+"\","
-    
+
     if(sex == ""):
         sex_cond=""
     else:
@@ -1086,7 +1086,7 @@ def Update_researchers():
         db.connection.commit()
         cur.close()
         flash("Researcher updated successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Update_researchers"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -1123,7 +1123,7 @@ def Update_projects():
         abs_cond=""
     else:
         abs_cond = " abstract = \""+abs+"\","
-    
+
     if(sdate == ""):
         sdate_cond=""
     else:
@@ -1133,7 +1133,7 @@ def Update_projects():
         edate_cond=""
     else:
         edate_cond = " end_date = \""+edate+"\","
-   
+
     if(edate == ""):
         duration_cond=""
     else:
@@ -1191,7 +1191,7 @@ def Update_projects():
         db.connection.commit()
         cur.close()
         flash("Project updated successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Update_projects"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -1228,7 +1228,7 @@ def Update_report():
         db.connection.commit()
         cur.close()
         flash("Report updated successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Update_report"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -1321,7 +1321,7 @@ def Update_organization():
         db.connection.commit()
         cur.close()
         flash("Organization updated successfully", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("Update_organization"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
