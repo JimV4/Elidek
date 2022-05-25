@@ -134,7 +134,7 @@ def create_exec():
     return render_template("insert_executives.html", pageTitle = "Create About")
 
 @app.route("/create/insert_fields", methods = [ "POST"]) ## "GET" by default
-def create_filed():
+def create_field():
 
     ## form = StudentForm()
     ## when the form is submitted
@@ -316,10 +316,18 @@ def create_proj():
 
     # newStudent = form.__dict__
     query = "insert into projects(project_ID, title, abstract, start_date, end_date, duration, amount, org_acronym, program_ID, exec_ID, supervisor_ID, evaluator_ID, eval_mark, eval_date) values(\""+id+"\", \""+title+"\", \""+abs+"\", \""+sdate+"\", \""+edate+"\", "+duration+", "+amount+", \""+org+"\", \""+prog+"\", \""+exec+"\", \""+sup+"\", \""+eval+"\", "+mark+", \""+eval_date+"\" );"
+
+    # insert the supervisor in works_at relation
+    query2 = "insert into works_at(researcher_ID, project_ID) values(\""+sup+"\", \""+id+"\")"
     print(query)
     try:
         cur = db.connection.cursor()
         cur.execute(query)
+        db.connection.commit()
+        cur.close()
+
+        cur = db.connection.cursor()
+        cur.execute(query2)
         db.connection.commit()
         cur.close()
         flash("Project inserted successfully", "success")
