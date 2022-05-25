@@ -284,7 +284,7 @@ def create_org():
         db.connection.commit()
         cur.close()
         flash("Organization inserted successfully", "success")
-        return redirect(url_for("create_organization"))
+        return redirect(url_for("create_org"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
 
@@ -378,7 +378,7 @@ def complicated_query():
         cur = db.connection.cursor()
 
         if(pr != ""):
-            query1="select r.first_name, r.last_name from works_at as w, researchers as r where  w.researcher_ID = r.researcher_ID and w.project_ID = \""+pr+"\";"
+            query1="select r.first_name, r.last_name from works_at as w, researchers as r, projects as p where  w.researcher_ID = r.researcher_ID and p.project_ID = w.project_ID and p.title = \""+pr+"\";"
         else:
             Query1="select title, program_ID from projects "+where+sdate_cond+edate_cond+duration_cond+exec_id_cond+";"
             query1=Query1.replace("and;", ';')

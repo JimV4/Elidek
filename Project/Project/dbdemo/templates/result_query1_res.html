@@ -16,9 +16,9 @@ Executive's ID: <input type="text" name="exec_id">
 <br/><br/>
 Select title:
 <select name="project">
-	<option value="">
+  <option value="">
 	{% for projects in projects %}
-		<option value = {{projects.title}}> {{projects.title}} </option>
+		<li><option value = '{{projects.title}}'> {{projects.title}} </option></li>
 	{% endfor %}
 </select>
 <br/>
@@ -38,16 +38,18 @@ Select title:
 	<table>
         <thead>
 	          <tr>
-								<th>Title</th>
-                <th>Program</th>
+								<th>First Name</th>
+                <th>Last Name</th>
+
              </tr>
         </thead>
         <tbody>
 								{% for projects in projects %}
                 <tr>
 
-										<td> {{ projects.title }}</td>
-                    <td> {{ projects.program_ID }}</td>
+										<td> {{ projects.first_name }}</td>
+                    <td> {{ projects.last_name }}</td>
+
 
 
 								{% endfor %}
