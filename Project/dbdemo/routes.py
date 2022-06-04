@@ -315,22 +315,22 @@ def create_proj():
     duration =  getDuration(sdate, edate)
 
     # newStudent = form.__dict__
-    query = "insert into projects(project_ID, title, abstract, start_date, end_date, duration, amount, org_acronym, program_ID, exec_ID, supervisor_ID, evaluator_ID, eval_mark, eval_date) values(\""+id+"\", \""+title+"\", \""+abs+"\", \""+sdate+"\", \""+edate+"\", "+duration+", "+amount+", \""+org+"\", \""+prog+"\", \""+exec+"\", \""+sup+"\", \""+eval+"\", "+mark+", \""+eval_date+"\" );"
+    query = "insert into projects(project_ID, title, abstract, start_date, end_date, duration, amount, org_acronym, program_ID, exec_ID, supervisor_ID, evaluator_ID, eval_mark, eval_date) values(\""+id+"\", \""+title+"\", \""+abs+"\", \""+sdate+"\", \""+edate+"\", \""+duration+"\", \""+amount+"\", \""+org+"\", \""+prog+"\", \""+exec+"\", \""+sup+"\", \""+eval+"\", \""+mark+"\", \""+eval_date+"\" );"
+    print(query)
 
     # insert the supervisor in works_at relation
     query2 = "insert into works_at(researcher_ID, project_ID) values(\""+sup+"\", \""+id+"\")"
-    print(query)
     try:
         cur = db.connection.cursor()
         cur.execute(query)
+        if (sup != eval):
+            cur.execute(query2)
+            print(query2)
+
         db.connection.commit()
         cur.close()
 
-        cur = db.connection.cursor()
-        cur.execute(query2)
-        db.connection.commit()
-        cur.close()
-        flash("Project inserted successfully", "success")
+        flash("Project inserted successfully. The supervisor of the project is inserted in the works_at relation", "success")
         return redirect(url_for("create_proj"))
     except Exception as e: ## OperationalError
         flash(str(e), "danger")
@@ -463,9 +463,22 @@ def field_in_intrest():
         #conn = db.connect()
         #cur = conn.cursor()
         sector = request.form['sector']
+        table = request.form['choice']
         cur = db.connection.cursor()
 
-        query3="select distinct r.first_name, r.last_name from researchers as r, works_at as w, about as a, projects as p where r.researcher_ID = w.researcher_ID and p.project_ID = w.project_ID and   p.project_ID = a.project_ID and a.project_ID = w.project_ID and (((datediff(p.end_date, current_date) > 0) and (datediff(current_date, p.start_date) > 0)) or (datediff(current_date, p.end_date) < 365)) and a.sector = \'" +sector+"\';"
+        if(table == "res"):
+            query3='''select distinct r.first_name, r.last_name
+                        from researchers as r, works_at as w, about as a, projects as p
+                        where r.researcher_ID = w.researcher_ID and
+	                    p.project_ID = w.project_ID and
+                        p.project_ID = a.project_ID and
+                        a.project_ID = w.project_ID and (((datediff(p.end_date, current_date) > 0) and (datediff(current_date, p.start_date) > 0)) or((datediff(current_date, p.end_date) < 365) and (datediff(current_date, p.end_date) > 0))) and
+                        a.sector =\"'''+sector+ '''\";'''
+        else:
+            query3='''select p.title
+                        from projects as p, about as a
+                        where p.project_ID = a.project_ID and (datediff(p.end_date, current_date) > 0) and (datediff(current_date, p.start_date) > 0) and a.sector = \"'''+sector+'''\";'''
+        print(query3)
         cur.execute(query3)
 
         #cur.execute("SELECT researcher_ID, last_name, first_name FROM researchers")
@@ -473,7 +486,12 @@ def field_in_intrest():
         #res = dict(zip(column_names, cur.fetchone()))
         fields = [dict(zip(column_names, entry)) for entry in cur.fetchall()]
         cur.close()
-        return render_template("result_query3.html", fields = fields, pageTitle = "Fields Page")
+        if(table=="res"):
+            return render_template("result_query3_res.html", fields = fields, pageTitle = "Fields Page")
+        else:
+            return render_template("result_query3_prj.html", fields = fields, pageTitle = "Fields Page")
+
+
 
     except Exception as e:
         print(e)
@@ -481,6 +499,41 @@ def field_in_intrest():
         flash(str(e), "danger")
         abort(500)
 
+
+@app.route("/read/query4", methods = ["GET"])
+def doubleYear():
+    try:
+        ## execute query 4
+        #conn = db.connect()
+        #cur = conn.cursor()
+        cur = db.connection.cursor()
+
+
+        cur.execute('''with help(project_ID, syear, org_acronym) as
+                        (select project_ID,  extract(year from start_date), org_acronym
+                        from projects),
+
+                        help2(org_acronym, syear, amount) as
+                        (select org_acronym, syear, count(project_ID)  from help
+                        group by org_acronym, syear
+                        order by org_acronym)
+
+                        select distinct h1.org_acronym from help2 as h1, help2 as h2
+                        where h1.org_acronym = h2.org_acronym and h1.syear = h2.syear + 1 and h1.amount = h2.amount and h1.amount>0;
+                        ''')
+
+        #cur.execute("SELECT researcher_ID, last_name, first_name FROM researchers")
+        column_names = [i[0] for i in cur.description]
+        #res = dict(zip(column_names, cur.fetchone()))
+        fields = [dict(zip(column_names, entry)) for entry in cur.fetchall()]
+        cur.close()
+        return render_template("query4.html", fields = fields, pageTitle = "Fields Page")
+
+    except Exception as e:
+        print(e)
+        #if the connection to the database fails, return HTTP response 500
+        flash(str(e), "danger")
+        abort(500)
 
 @app.route("/read/query5", methods = ["GET"])
 def pairFields():
@@ -522,16 +575,19 @@ def youngResearchers():
         #cur = conn.cursor()
         cur = db.connection.cursor()
 
-
-        cur.execute('''with help(researcher_ID, last_name, first_name, value) as
-                   (select r.researcher_ID, r.last_name, r.first_name, count(w.project_ID) as "proj_num"
-                    from researchers as r, works_at as w, projects as p
-                    where r.researcher_ID = w.researcher_ID and p.project_ID = w.project_ID
-                    and (datediff(p.end_date, current_date) > 0) and (datediff(current_date, r.birth_date) < 14600)
-                    group by r.last_name, r.first_name, r.researcher_ID)
-                    select distinct h1.researcher_ID, h1.last_name, h1.first_name, h1.value
-                    from help as h1, help as h2
-                    where h1.value > h2.value;''')
+        query = '''with help(researcher_ID, last_name, first_name, value) as
+                        (select r.researcher_ID, r.last_name, r.first_name, count(w.project_ID)
+                        from researchers as r, works_at as w, projects as p
+                        where r.researcher_ID = w.researcher_ID and p.project_ID = w.project_ID
+		                and (datediff(p.end_date, current_date) > 0) and (datediff(current_date, p.start_date) > 0) and (datediff(current_date, r.birth_date) < 14600)
+                        group by r.last_name, r.first_name, r.researcher_ID),
+                        help2(value) as
+                        (select MAX(value) from help)
+                        select h1.first_name, h1.last_name, h1.value
+                        from help as h1, help2 as h2
+                        where h1.value = h2.value;'''
+        print(query)
+        cur.execute(query)
 
         #cur.execute("SELECT researcher_ID, last_name, first_name FROM researchers")
         column_names = [i[0] for i in cur.description]
@@ -588,14 +644,14 @@ def researchNoReports():
         cur = db.connection.cursor()
 
 
-        cur.execute('''select r.researcher_ID, r.first_name, r.last_name, count(w.project_ID) as "proj_num"
+        cur.execute('''select r.first_name, r.last_name, count(w.project_ID) as "proj_num"
                        from researchers as r, works_at as w
                        where r.researcher_ID = w.researcher_ID and
                        w.project_ID not in (select p.project_ID
         						from projects as p, reports as rep
                                 where p.project_ID = rep.project_ID)
                                 group by r.first_name, r.last_name, r.researcher_ID
-                                having proj_num >= 2
+                                having proj_num >= 5
                                 order by r.researcher_ID;''')
 
         #cur.execute("SELECT researcher_ID, last_name, first_name FROM researchers")
@@ -681,6 +737,7 @@ def query2():
 @app.route("/read/query3")
 def query3():
     return render_template("query3.html")
+
 
 
 
@@ -1196,6 +1253,14 @@ def Update_projects():
     try:
         cur = db.connection.cursor()
         cur.execute(query)
+        if(sup!="" and sup!=eval):
+            query2 = "delete from works_at where researcher_ID = \"" + sup + "\" and project_ID = \"" + id + "\";"
+            print(query2)
+            cur.execute(query2)
+
+            query3 = "insert into works_at(researcher_ID, project_ID)values(\""+sup+"\", \""+ id + "\");"
+            print(query3)
+            cur.execute(query3)
         db.connection.commit()
         cur.close()
         flash("Project updated successfully", "success")

@@ -1,0 +1,21 @@
+org_acronym,category,name,street,street_number,postal_code,city,equity,funds_from_ministry,funds_from_actions
+A.C.E.R.,Comp,Agency for the Cooperation of Energy Regulations,republike,3,01000,Ljubljana,49000,NULL,NULL
+B.E.R.E.C.,Univ,BEREC,Zigfrida Annas Meierovica boulevard,14,01050,Riga,NULL,75000,NULL
+E.A.S.A.,Centr,European Aviation Safety Agency,Ottoplatz,1,50679,Cologne,NULL,59000,16000
+E.B.A.,Univ,European Banking Authority,avenue Andre Prothin,20,92400,Paris,NULL,45000,NULL
+E.C.B.,Univ,European Central Bank,Sonnemannstrasse,20,60314,Frankfurt am Main,NULL,5000,NULL
+E.C.D.C.,Centr,European Centre for Disease prevantion and Control,Gustav III:s Boulevard,73,16973,Solna,NULL,38000,28000
+E.CH.A.,Comp,European CHemicals Agency,Telakkakatu,6,00150,Helsinki,88000,NULL,NULL
+E.D.P.B.,Centr,European Data Protection Board,Rue Montoyer,30,B1000,Bruxelles,NULL,19000,65000
+E.D.P.S.,Centr,European Data Protection Supervisor,Rue Montoyer,30,B1000,Bruxelles,NULL,30000,78000
+E.E.A.,Univ,European Environment Agency,Kongens Nytorv,1,01050,Copenhagen,NULL,71000,NULL
+E.F.S.A.,Univ,European Food Safety Authority,Via Carlo Magno,1,43126,Parma,NULL,10000,NULL
+E.I.G.E.,Comp,European Institute for Gender Equality,Gedimino pr.,16,01103,Vilnius,53000,NULL,NULL
+E.I.O.P.A.,Centr,European Insurance and Occupational Pensions Authority,Westhafenplatz,1,60327,Frankfurt am Main,NULL,57000,84000
+E.L.A.,Comp,European Labour Authority,Landererova,12,81109,Bratislava,12000,NULL,NULL
+E.M.S.A.,Univ,European Maritime Safety Agency,Cais das Pombas,1,01272,Lisbon,NULL,26000,NULL
+E.R.A.,Univ,European Railways Agency,rue Marc Lefrancq,120,59300,Valenciennes,NULL,95000,NULL
+EU-OSHA,Comp,European Agency for Safety and Health at Work,Santiago de Compostela,12,48003,Bilbao,76000,NULL,NULL
+E.U.S.P.A.,Comp,European Union Agency for the Space Programme,Janovskeho,438,17000,Prague,76000,NULL,NULL
+F.R.A.,Centr,Fundamental Rights Agency,Schwarzenbergplatz,11,A1040,Vienna,NULL,20000,51000
+E.S.A.,Comp,European Space Agency,Rue du General Bertrand,24,75007,Paris,43000,NULL,NULL

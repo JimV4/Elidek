@@ -1,19 +1,19 @@
-CREATE SCHEMA elidekFinal;
-USE elidekFinal;
+CREATE SCHEMA elidek;
+USE elidek;
 
 drop table if exists organizations;
 create table organizations (
 	org_acronym		varchar(20),
-  category		varchar(50), check (category in ('Centr', 'Univ', 'Comp')),
-  name			varchar(20),
-	street			varchar(20),
+	category		varchar(50), check (category in ('Centr', 'Univ', 'Comp')),
+	name			varchar(60),
+	street			varchar(60),
 	street_number	varchar(5),
 	postal_code		char(5),
-	city			varchar(20),
+	city			varchar(50),
 	equity 			    int,	check (equity > 0),
 	funds_from_ministry int,	check (funds_from_ministry > 0),
 	funds_from_actions  int,	check (funds_from_actions > 0),
-  primary key (org_acronym));
+	primary key (org_acronym));
 
 
 drop table if exists org_phone;
@@ -37,7 +37,7 @@ create table programs (
 drop table if exists executives;
 create table executives (
 	exec_ID			varchar(5),
-  first_name		varchar(20),
+	first_name		varchar(20),
 	last_name		varchar(20),
     primary key (exec_ID));
 
@@ -68,8 +68,8 @@ create table researchers (
 drop table if exists projects;
 create table projects (
 	project_ID	varchar(5),
-    title	 	varchar(20),
-    abstract 	varchar(1024),
+    title	 	varchar(50),
+    abstract 	varchar(10000),
 	start_date  date,
 	end_date    date,
     duration 	numeric(2, 1)  check (duration > 0.9 and duration < 4.1),
@@ -107,8 +107,8 @@ create table projects (
 drop table if exists reports;
 create table reports (
 	project_ID	varchar(5),
-	title		varchar(20),
-    summary 	varchar(50),
+	title		varchar(50),
+    summary 	varchar(5000),
     primary key(project_ID, title),
 	foreign key (project_ID) references projects(project_ID)
 							 on delete cascade
@@ -140,6 +140,3 @@ create table works_at (
     foreign key (project_ID) 	references projects(project_ID)
 								on delete cascade
 								on update cascade);
-                                
-                                
-

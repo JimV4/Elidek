@@ -1,0 +1,27 @@
+<html>
+<par>
+<br/>
+	<a href = "http://127.0.0.1:5000">Go to Welcome.</a>
+	</par>
+	<br/>
+	<br/>
+	<table>
+        <thead>
+	          <tr>
+								<th>Organization</th>
+
+             </tr>
+        </thead>
+        <tbody>
+								{% for fields in fields %}
+                <tr>
+
+										<td> {{ fields.org_acronym}}</td>
+  
+
+
+								{% endfor %}
+         </tbody>
+    </table>
+
+</html>
