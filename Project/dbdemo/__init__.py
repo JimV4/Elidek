@@ -10,7 +10,7 @@ app = Flask(__name__)
 ## configuration of database
 
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'oCat31q3kP!!'
+app.config['MYSQL_PASSWORD'] = '****'
 #app.config['MYSQL_PASSWORD'] = '****'
 
 app.config['MYSQL_DB'] = 'elidek'
